@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -14,13 +15,13 @@ import db from '../utils/db';
 import Product from '../models/Product';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
 import { Store } from '../utils/Store';
 
 export default function Home(props) {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { products } = props;
+
   const addToCartHandler = async (product) => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
