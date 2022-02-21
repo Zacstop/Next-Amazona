@@ -22,7 +22,7 @@ import {
   ListItem,
 } from '@material-ui/core';
 import axios from 'axios';
-import useRouter from 'next/router';
+import { useRouter } from 'next/router';
 
 function CartScreen() {
   const router = useRouter();

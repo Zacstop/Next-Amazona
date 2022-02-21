@@ -10,7 +10,7 @@ handler.post(async (req, res) => {
   await db.connect();
   const user = await User.findOne({ email: req.body.email });
   await db.disconnect();
-  if (user && bcrypt.comparesync(req.body.password, user.password)) {
+  if (user && bcrypt.compareSync(req.body.password, user.password)) {
     const token = signToken(user);
     res.send({
       token,
@@ -20,7 +20,7 @@ handler.post(async (req, res) => {
       isAdmin: user.isAdmin,
     });
   } else {
-    res.statusCode(401).send({ message: 'Invalid user or password' });
+    res.statusCode(401).send({ message: 'Invalid email or password' });
   }
 });
 
