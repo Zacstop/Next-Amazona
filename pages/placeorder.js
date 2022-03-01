@@ -52,6 +52,7 @@ function PalceOrder() {
       router.push('/cart');
     }
   }, []);
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const placeOrderHandler = async () => {
@@ -61,7 +62,7 @@ function PalceOrder() {
       const { data } = await axios.post(
         '/api/orders',
         {
-          orderOItems: cartItems,
+          orderItems: cartItems,
           shippingAddress,
           paymentMethod,
           itemsPrice,
@@ -86,7 +87,7 @@ function PalceOrder() {
   };
 
   return (
-    <Layout title="Shopping Cart">
+    <Layout title="Palce Order">
       <CheckoutWizard activeStep={3} />
       <Typography component="h1" variant="h1">
         Palce Order

@@ -22,7 +22,6 @@ export default function Shipping() {
     setValue,
   } = useForm();
   const router = useRouter();
-  const { redirect } = router.query;
   const { state, dispatch } = useContext(Store);
   const {
     userInfo,
