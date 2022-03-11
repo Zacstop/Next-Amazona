@@ -11,11 +11,11 @@ import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import NextLink from 'next/link';
 import axios from 'axios';
-import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+import { Store } from '../utils/Store';
 import Cookies from 'js-cookie';
-import { useForm, Controller } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
+import { Controller, useForm } from 'react-hook-form';
 
 export default function Login() {
   const {
@@ -25,7 +25,7 @@ export default function Login() {
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
-  const { redirect } = router.query;
+  const { redirect } = router.query; // login?redirect=/shipping
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   useEffect(() => {
@@ -33,8 +33,9 @@ export default function Login() {
       router.push('/');
     }
   }, []);
+
   const classes = useStyles();
-  const submitHandler = async ({ email, password }) => {
+  const loginHandler = async (email, password) => {
     closeSnackbar();
     try {
       const { data } = await axios.post('/api/users/login', {
@@ -45,16 +46,13 @@ export default function Login() {
       Cookies.set('userInfo', data);
       router.push(redirect || '/');
     } catch (err) {
-      enqueueSnackbar(
-        err.response.data ? err.response.data.message : err.message,
-        { variant: 'error' }
-      );
+      enqueueSnackbar(err.message, { variant: 'error' });
     }
   };
 
   return (
     <Layout title="Login">
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+      <form onSubmit={handleSubmit(loginHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Login
         </Typography>
@@ -71,9 +69,9 @@ export default function Login() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="email"
                   label="Email"
-                  fullWidth
                   inputProps={{ type: 'email' }}
                   error={Boolean(errors.email)}
                   helperText={
@@ -100,16 +98,16 @@ export default function Login() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="password"
                   label="Password"
-                  fullWidth
                   inputProps={{ type: 'password' }}
                   error={Boolean(errors.password)}
                   helperText={
                     errors.password
                       ? errors.password.type === 'minLength'
-                        ? 'Password length is more than 5'
-                        : 'Password is required'
+                        ? 'password length is more than 5'
+                        : 'Email is required'
                       : ''
                   }
                   {...field}
@@ -118,14 +116,16 @@ export default function Login() {
             ></Controller>
           </ListItem>
           <ListItem>
-            <Button variant="contained" type="submit" color="primary" fullWidth>
-              Login
+            <Button color="primary" variant="contained" type="submit" fullWidth>
+              LOGIN
             </Button>
           </ListItem>
           <ListItem>
             Do not have an account? &nbsp;
             <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
-              <Link>Register</Link>
+              <Link>
+                <Typography color="primary">Register</Typography>
+              </Link>
             </NextLink>
           </ListItem>
         </List>

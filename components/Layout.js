@@ -1,30 +1,36 @@
-import React, { useContext, useState } from 'react';
-import Head from 'next/head';
-import NextLink from 'next/link';
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Link,
-  createTheme,
-  ThemeProvider,
-  CssBaseline,
-  Switch,
   Badge,
   Button,
+  Container,
+  createTheme,
+  CssBaseline,
+  Link,
   Menu,
   MenuItem,
+  Switch,
+  ThemeProvider,
+  Toolbar,
+  Typography,
 } from '@material-ui/core';
-import useStyles from '../utils/styles';
+import React, { useContext, useState } from 'react';
+import useStyle from '../utils/styles';
+import NextLink from 'next/link';
+import Head from 'next/head';
 import { Store } from '../utils/Store';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-export default function Layout({ title, description, children }) {
+export default function Layout({ children, title }) {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
+  const classes = useStyle();
+  const darkModeHandler = () => {
+    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
+    const nowDarkMode = !darkMode;
+    Cookies.set('darkMode', nowDarkMode ? 'ON' : 'OFF');
+  };
   const theme = createTheme({
     typography: {
       h1: {
@@ -48,12 +54,6 @@ export default function Layout({ title, description, children }) {
       },
     },
   });
-  const classes = useStyles();
-  const darkModeChangeHandler = () => {
-    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
-    const newDarkMode = !darkMode;
-    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
-  };
   const [anchorEl, setAnchorEl] = useState(null);
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget);
@@ -71,10 +71,7 @@ export default function Layout({ title, description, children }) {
 
   return (
     <div>
-      <Head>
-        <title>{title ? `${title} - Next Amazona` : 'Next Amazona'}</title>
-        {description && <meta name="description" content={description}></meta>}
-      </Head>
+      <Head>{title}</Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppBar position="static" className={classes.navbar}>
@@ -86,22 +83,12 @@ export default function Layout({ title, description, children }) {
             </NextLink>
             <div className={classes.grow}></div>
             <div>
-              <Switch
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch>
+              <Switch checked={darkMode} onChange={darkModeHandler} />
               <NextLink href="/cart" passHref>
                 <Link>
-                  {cart.cartItems.length > 0 ? (
-                    <Badge
-                      color="secondary"
-                      badgeContent={cart.cartItems.length}
-                    >
-                      Cart
-                    </Badge>
-                  ) : (
-                    'Cart'
-                  )}
+                  <Badge badgeContent={cart.cartItems.length} color="secondary">
+                    cart
+                  </Badge>
                 </Link>
               </NextLink>
               {userInfo ? (
@@ -138,7 +125,7 @@ export default function Layout({ title, description, children }) {
         </AppBar>
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
-          <Typography>All rights reserved. Next Amazona.</Typography>
+          All rights reserved. Next Amazona.
         </footer>
       </ThemeProvider>
     </div>

@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-
 const data = {
   users: [
     {
@@ -21,6 +20,8 @@ const data = {
       slug: 'free-shirt',
       category: 'Shirts',
       image: '/images/shirt1.jpg',
+      isFeatured: true,
+      featuredImage: '/images/banner1.jpg',
       price: 70,
       brand: 'Nike',
       rating: 4.5,
@@ -33,6 +34,8 @@ const data = {
       slug: 'fit-shirt',
       category: 'Shirts',
       image: '/images/shirt2.jpg',
+      isFeatured: true,
+      featuredImage: '/images/banner2.jpg',
       price: 80,
       brand: 'Adidas',
       rating: 4.2,
@@ -70,7 +73,7 @@ const data = {
       category: 'Pants',
       image: '/images/pants2.jpg',
       price: 95,
-      brand: 'Zara',
+      brand: 'Lacoste',
       rating: 4.5,
       numReviews: 10,
       countInStock: 20,

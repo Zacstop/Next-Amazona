@@ -8,11 +8,10 @@ import {
 import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
-import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+import { Store } from '../utils/Store';
 import Cookies from 'js-cookie';
-import { useForm, Controller } from 'react-hook-form';
-import CheckoutWizard from '../components/CheckoutWizard';
+import { Controller, useForm } from 'react-hook-form';
 
 export default function Shipping() {
   const {
@@ -37,9 +36,14 @@ export default function Shipping() {
     setValue('postalCode', shippingAddress.postalCode);
     setValue('country', shippingAddress.country);
   }, []);
-
   const classes = useStyles();
-  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+  const shippingHandler = async ({
+    fullName,
+    address,
+    city,
+    postalCode,
+    country,
+  }) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
       payload: { fullName, address, city, postalCode, country },
@@ -55,9 +59,8 @@ export default function Shipping() {
   };
 
   return (
-    <Layout title="Shipping">
-      <CheckoutWizard activeStep={1} />
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+    <Layout title="Shipping Address">
+      <form onSubmit={handleSubmit(shippingHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
           Shipping Address
         </Typography>
@@ -74,9 +77,9 @@ export default function Shipping() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="fullName"
                   label="Full Name"
-                  fullWidth
                   error={Boolean(errors.fullName)}
                   helperText={
                     errors.fullName
@@ -102,9 +105,9 @@ export default function Shipping() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="address"
                   label="Address"
-                  fullWidth
                   error={Boolean(errors.address)}
                   helperText={
                     errors.address
@@ -130,9 +133,9 @@ export default function Shipping() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="city"
                   label="City"
-                  fullWidth
                   error={Boolean(errors.city)}
                   helperText={
                     errors.city
@@ -158,9 +161,9 @@ export default function Shipping() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="postalCode"
                   label="Postal Code"
-                  fullWidth
                   error={Boolean(errors.postalCode)}
                   helperText={
                     errors.postalCode
@@ -186,9 +189,9 @@ export default function Shipping() {
               render={({ field }) => (
                 <TextField
                   variant="outlined"
+                  fullWidth
                   id="country"
                   label="Country"
-                  fullWidth
                   error={Boolean(errors.country)}
                   helperText={
                     errors.country
@@ -203,8 +206,8 @@ export default function Shipping() {
             ></Controller>
           </ListItem>
           <ListItem>
-            <Button variant="contained" type="submit" color="primary" fullWidth>
-              Countinue
+            <Button color="primary" variant="contained" type="submit" fullWidth>
+              Continue
             </Button>
           </ListItem>
         </List>

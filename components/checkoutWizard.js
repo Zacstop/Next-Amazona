@@ -6,7 +6,7 @@ export default function CheckoutWizard({ activeStep = 0 }) {
   const classes = useStyles();
   return (
     <Stepper
-      className={classes.transparentBackground}
+      className={classes.transparentBackgroud}
       activeStep={activeStep}
       alternativeLabel
     >

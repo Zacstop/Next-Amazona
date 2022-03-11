@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -9,12 +8,13 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import NextLink from 'next/link';
+import React, { useContext } from 'react';
 import Layout from '../components/Layout';
+import NextLink from 'next/link';
 import db from '../utils/db';
 import Product from '../models/Product';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import { Store } from '../utils/Store';
 
 export default function Home(props) {
@@ -30,14 +30,14 @@ export default function Home(props) {
       window.alert('Sorry. Product is out of stock');
       return;
     }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+    dispatch({ type: 'ADD_TO_CART', payload: { ...product, quantity } });
     router.push('/cart');
   };
 
   return (
-    <Layout>
+    <Layout title={'Next Amazona'}>
       <div>
-        <h1>Product</h1>
+        <h1>Products</h1>
         <Grid container spacing={3}>
           {products.map((product) => (
             <Grid item md={4} key={product.name}>
@@ -48,7 +48,7 @@ export default function Home(props) {
                       component="img"
                       image={product.image}
                       title={product.name}
-                    ></CardMedia>
+                    />
                     <CardContent>
                       <Typography>{product.name}</Typography>
                     </CardContent>
@@ -61,7 +61,7 @@ export default function Home(props) {
                     color="primary"
                     onClick={() => addToCartHandler(product)}
                   >
-                    Add to cart
+                    ADD TO CART
                   </Button>
                 </CardActions>
               </Card>
