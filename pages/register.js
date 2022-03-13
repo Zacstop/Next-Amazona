@@ -34,7 +34,12 @@ export default function Register() {
     }
   }, []);
   const classes = useStyles();
-  const registerHandler = async (name, email, password, confirmPassword) => {
+  const registerHandler = async ({
+    name,
+    email,
+    password,
+    confirmPassword,
+  }) => {
     closeSnackbar();
     if (password !== confirmPassword) {
       enqueueSnackbar("Password don't match", { variant: 'error' });

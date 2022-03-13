@@ -33,9 +33,8 @@ export default function Login() {
       router.push('/');
     }
   }, []);
-
   const classes = useStyles();
-  const loginHandler = async (email, password) => {
+  const loginHandler = async ({ email, password }) => {
     closeSnackbar();
     try {
       const { data } = await axios.post('/api/users/login', {
@@ -46,16 +45,17 @@ export default function Login() {
       Cookies.set('userInfo', data);
       router.push(redirect || '/');
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      enqueueSnackbar(
+        err.response.data ? err.response.data.message : err.message,
+        { variant: 'error' }
+      );
     }
   };
 
   return (
     <Layout title="Login">
       <form onSubmit={handleSubmit(loginHandler)} className={classes.form}>
-        <Typography component="h1" variant="h1">
-          Login
-        </Typography>
+        <Typography variant="h1">Login</Typography>
         <List>
           <ListItem>
             <Controller
